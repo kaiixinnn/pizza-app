@@ -178,6 +178,102 @@ body {
   background-color: #e9bb24;
 }
 
+.fav-btn {
+  background-color: #edc84b; /* Default color */
+  border: none;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease-in-out; /* Added transition for hover effect */
+  border-radius: 5px;
+  font-weight: bold;
+  color: white; /* Text color */
+  display: inline-block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.fav-btn:hover {
+  background-color: #d49a3e; /* Slightly darker shade when hovered */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.fav-btn.favourited {
+  background-color: #d49a3e; /* Darker color when added to favourites */
+}
+
+.fav-btn.favourited:hover {
+  background-color: #c88e2f; /* Even darker shade when hovered while favourited */
+}
+
+.fav-btn:active {
+  transform: scale(0.98); /* Slightly shrink the button when clicked for active effect */
+}
+
+.fav-btn:focus {
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px rgba(237, 200, 75, 0.6); /* Add a glowing effect on focus */
+}
+
+/* Search Bar Styles */
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.search input {
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  border: 2px solid #edc84b;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #252525;
+  width: 20rem;
+  transition: border-color 0.3s, box-shadow 0.3s ease-in-out;
+}
+
+.search input::placeholder {
+  color: #888;
+}
+
+.search input:focus {
+  outline: none;
+  border-color: #d49a3e;
+  box-shadow: 0 0 8px rgba(237, 200, 75, 0.5);
+}
+
+.search input:hover {
+  border-color: #d49a3e;
+}
+
+.search button {
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  background-color: #edc84b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+.search button:hover {
+  background-color: #d49a3e;
+  transform: scale(1.05);
+}
+
+.search button:active {
+  transform: scale(0.98);
+}
+
+.search button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(237, 200, 75, 0.6);
+}
+
 /*
 SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128

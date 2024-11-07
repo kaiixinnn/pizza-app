@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css'; // Importing the CSS file
 
@@ -51,10 +51,32 @@ function App() {
     const currentHour = new Date().getHours();
     const isOpen = currentHour >= 10 && currentHour < 22;
 
+    const [searchTerm, setSearchTerm] = useState('');
+    const [favourites, setFavourites] = useState([]);
+
+    const filteredPizzas = pizzaData.filter(
+        pizza => pizza.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 pizza.ingredients.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const toggleFavourite = (pizza) => {
+        setFavourites(prev => {
+            const newFavourites = [...prev];
+            const pizzaIndex = newFavourites.indexOf(pizza);
+            if (pizzaIndex > -1) {
+                newFavourites.splice(pizzaIndex, 1); // Remove pizza from favourites
+            } else {
+                newFavourites.push(pizza); // Add pizza to favourites
+            }
+            return newFavourites;
+        });
+    };
+
     return (
         <div className="container">
             <Header isOpen={isOpen} />
-            <Menu pizzas={pizzaData} />
+            <SearchBar setSearchTerm={setSearchTerm} />
+            <Menu pizzas={filteredPizzas} toggleFavourite={toggleFavourite} favourites={favourites} />
             <Footer isOpen={isOpen} />
         </div>
     );
@@ -69,7 +91,19 @@ function Header({ isOpen }) {
     );
 }
 
-function Menu({ pizzas }) {
+function SearchBar({ setSearchTerm }) {
+    return (
+        <section className="search">
+            <input
+                type="text"
+                placeholder="Search pizzas..."
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+        </section>
+    );
+}
+
+function Menu({ pizzas, toggleFavourite, favourites }) {
     return (
         <section className="menu">
             <h2>Our Menu</h2>
@@ -77,11 +111,9 @@ function Menu({ pizzas }) {
                 {pizzas.map((pizza, index) => (
                     <Pizza
                         key={index}
-                        name={pizza.name}
-                        ingredients={pizza.ingredients}
-                        price={pizza.price}
-                        photoName={pizza.photoName}
-                        soldOut={pizza.soldOut}
+                        pizza={pizza}
+                        toggleFavourite={toggleFavourite}
+                        isFavourite={favourites.includes(pizza)}
                     />
                 ))}
             </ul>
@@ -89,14 +121,20 @@ function Menu({ pizzas }) {
     );
 }
 
-function Pizza({ name, ingredients, price, photoName, soldOut }) {
+function Pizza({ pizza, toggleFavourite, isFavourite }) {
     return (
-        <li className={`pizza ${soldOut ? 'sold-out' : ''}`}>
-            <img src={photoName} alt={`${name} pizza`} />
+        <li className={`pizza ${pizza.soldOut ? 'sold-out' : ''}`}>
+            <img src={pizza.photoName} alt={`${pizza.name} pizza`} />
             <div>
-                <h3>{name}</h3>
-                <p>{ingredients}</p>
-                <span>{soldOut ? "Sold Out" : `$${price}`}</span>
+                <h3>{pizza.name}</h3>
+                <p>{pizza.ingredients}</p>
+                <span>{pizza.soldOut ? "Sold Out" : `$${pizza.price}`}</span>
+                <button
+                    className={`fav-btn ${isFavourite ? 'favourited' : ''}`}
+                    onClick={() => toggleFavourite(pizza)}
+                >
+                    {isFavourite ? 'Remove from Favourites' : 'Add to Favourites'}
+                </button>
             </div>
         </li>
     );
@@ -113,10 +151,9 @@ function Footer({ isOpen }) {
 
 function OrderButton() {
     return (
-        <div className = "order">
-        <button className="btn">Order</button>
+        <div className="order">
+            <button className="btn">Order</button>
         </div>
-    
     );
 }
 
